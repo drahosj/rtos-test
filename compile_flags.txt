@@ -1,0 +1,5 @@
+-iCore/Inc
+-iDrivers/STM32F4xx_HAL_Driver/Inc
+-iDrivers/CMSIS/Devices/ST/STM323F4xx/Include
+-iDrivers/CMSIS/Include
+-iMiddlewares/Third_Party/FreeRTOS/Source/include
