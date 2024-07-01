@@ -37,11 +37,6 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-struct WriteRequest {
-    size_t len;
-    osMemoryPoolId_t pool;
-    uint8_t * buf;
-};
 
 /* USER CODE END ET */
 
@@ -52,6 +47,7 @@ struct WriteRequest {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
+#define ASSERT(x) if (!(x)) assert_failed((uint8_t *) __FILE__, __LINE__)
 
 /* USER CODE END EM */
 

@@ -21,6 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
+#include "uart_io.h"
 
 /* USER CODE END 0 */
 
@@ -52,7 +53,7 @@ void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART2_Init 2 */
-
+  HAL_UART_RegisterCallback(&huart2, HAL_UART_TX_COMPLETE_CB_ID, uartDmaTransmit);
   /* USER CODE END USART2_Init 2 */
 
 }

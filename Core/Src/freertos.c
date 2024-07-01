@@ -25,6 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "uart_io.h"
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -45,6 +47,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+osMemoryPoolId_t consoleWritePoolHandle;
+osMemoryPoolAttr_t consoleWritePool_attributes = {
+  .name = "consoleWritePool"
+};
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -110,6 +116,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+  consoleWritePoolHandle = osMemoryPoolNew(64, 64, &consoleWritePool_attributes);
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -124,6 +131,7 @@ void MX_FREERTOS_Init(void) {
   consoleHandle = osEventFlagsNew(&console_attributes);
 
   /* USER CODE BEGIN RTOS_EVENTS */
+  osEventFlagsSet(consoleHandle, 1);
   /* add events, ... */
   /* USER CODE END RTOS_EVENTS */
 
@@ -139,6 +147,8 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+  puts("Hello, world\n");
+  puts("This is a longer write, over the 64-byte chunk that will get passed to the write handler. It should be two chunks or longer, so I'm adding a lot.\n");
   /* Infinite loop */
   for(;;)
   {

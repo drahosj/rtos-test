@@ -19,9 +19,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "cmsis_os2.h"
 #include "dma.h"
 #include "usart.h"
 #include "gpio.h"
+#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -59,6 +61,8 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+#define ASSERT_PRINT(x) HAL_UART_Transmit(&huart2, (uint8_t *) (x), strlen(x), 1000);
+
 /* USER CODE END 0 */
 
 /**
@@ -93,6 +97,10 @@ int main(void)
   MX_DMA_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  
+  const char * msg = "\n\n\n   ==== UART CONFIGURED ====\n\n\n";
+  HAL_UART_Transmit(&huart2, (uint8_t *) msg, strlen(msg), 1000);
+
 
   /* USER CODE END 2 */
 
@@ -215,8 +223,13 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
+  
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  osKernelLock();
+  HAL_UART_Abort(&huart2);
+  ASSERT_PRINT("PANIC! ASSERT FAILURE\n");
+  for(;;);
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
